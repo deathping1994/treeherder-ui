@@ -5,7 +5,13 @@
 'use strict';
 
 /* Filters */
-
+treeherder.filter('pagination', function()
+{
+  return function(input, page) {
+    page = parseInt(page, 10);
+    return input.slice(page);
+  };
+});
 treeherder.filter('showOrHide', function() {
     // determine whether this is a label for a job group (like mochitest)
     return function(input, isCollapsed) {

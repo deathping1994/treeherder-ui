@@ -19,6 +19,19 @@ treeherder.controller('SimilarJobsPluginCtrl', [
         $log.debug("similar jobs plugin initialized");
 
         // do the jobs retrieval based on the user selection
+        $scope.disable_older = function() {
+            if($scope.has_next_page)
+           return  ""
+           else
+            return "disabled";
+         };
+         $scope.disable_newer = function() {
+            if($scope.page===1)
+           return  "disabled"
+           else
+            return "";
+         };
+
         $scope.page_size = 20;
         $scope.get_similar_jobs = function(){
             thTabs.tabs.similarJobs.is_loading = true;
@@ -60,6 +73,7 @@ treeherder.controller('SimilarJobsPluginCtrl', [
                                 });
                                 $scope.similar_jobs = $.merge($scope.similar_jobs, data);
                                 // on the first page show the first element info by default
+
                                 if($scope.page === 1 && $scope.similar_jobs.length > 0){
                                     $scope.show_job_info($scope.similar_jobs[0]);
                                 }
@@ -107,8 +121,16 @@ treeherder.controller('SimilarJobsPluginCtrl', [
         };
 
         // this is triggered by the show more link
-        $scope.show_next = function(){
+        $scope.show_previous = function(){
             $scope.page += 1;
+            $scope.get_similar_jobs();
+        };
+
+        $scope.show_latest = function(){
+            if($scope.page>1)
+                {$scope.page -= 1;
+                }
+                
             $scope.get_similar_jobs();
         };
 

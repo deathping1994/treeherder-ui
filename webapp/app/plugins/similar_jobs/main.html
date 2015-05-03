@@ -1,5 +1,7 @@
 <div class="similar_jobs" ng-controller="SimilarJobsPluginCtrl">
             <div class="left_panel">
+                
+                
                 <table class="table table-super-condensed table-bordered table-hover">
                     <thead>
                         <tr>
@@ -9,7 +11,7 @@
                     <tbody>
                         <tr ng-click="show_job_info(similar_job)"
                             ng-class="{'active': similar_job_selected.id===similar_job.id}"
-                            ng-repeat="similar_job in similar_jobs">
+                            ng-repeat="similar_job in similar_jobs | pagination: (page-1)*page_size | limitTo: page_size">
                             <td>
                                 <button
                                         class="btn btn-similar-jobs btn-xs"
@@ -19,6 +21,7 @@
                                         *
                                     </span>
                                 </button>
+                            
                             </td>
                             <td>{{ ::similar_job.result_set.push_timestamp*1000 | date:'EEE MMM d, H:mm:ss' }}</td>
                             <td>
@@ -34,7 +37,17 @@
                         </tr>
                     </tbody>
                 </table>
-                <a class="btn btn-default btn-sm" ng-if="has_next_page" href="" prevent-default-on-left-click  ng-click="show_next()">Show previous jobs</a>
+                <div class="text-center">
+                    <ul class="pagination">
+                    <li ng-class="disable_older()"><a class="btn btn-default btn-sm" href="" prevent-default-on-left-click  ng-click="show_previous()">Older</a>
+                    </li>
+                    <li ng-class="disable_newer()">
+                    <a class="btn btn-default btn-sm" href="" prevent-default-on-left-click  ng-click="show_latest()">Newer</a>
+                    </li>
+                    </ul>
+                    
+                </div>
+                
             </div>
             <div class="right_panel">
                 <form role="form" class="form form-inline">
